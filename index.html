@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal da Melhor Idade - Acessibilidade</title>
+    <style>
+        /* ==========================================================
+           VARIÁVEIS DE ACESSIBILIDADE E TEMAS
+           ========================================================== */
+        :root {
+            --font-scale: 1rem; /* Tamanho Base = 16px */
+            --bg-color: #f4f6f9;
+            --surface-color: #ffffff;
+            --text-color: #1a1a1a;
+            --text-secondary: #4a5568;
+            --border-color: #cbd5e0;
+            --primary-color: #0056b3;
+            --primary-hover: #003d82;
+            --emergency-red: #d32f2f;
+            --emergency-hover: #9a0007;
+            --whatsapp-green: #1e7e34;
+            --whatsapp-hover: #145523;
+            --focus-outline: 4px solid #ffbf00;
+        }
+
+        /* ==========================================================
+           CONTROLES DE TAMANHO DE FONTE (PURE CSS HAS SELECTOR)
+           ========================================================== */
+        body:has(#font-size-sm:checked) { --font-scale: 0.9rem; }
+        body:has(#font-size-md:checked) { --font-scale: 1.15rem; }
+        body:has(#font-size-lg:checked) { --font-scale: 1.4rem; }
+        body:has(#font-size-xl:checked) { --font-scale: 1.7rem; }
+
+        /* MODO ALTO CONTRASTE */
+        body:has(#contrast-toggle:checked) {
+            --bg-color: #000000;
+            --surface-color: #121212;
+            --text-color: #ffffff;
+            --text-secondary: #e0e0e0;
+            --border-color: #ffff00;
+            --primary-color: #ffff00;
+            --primary-hover: #d4d400;
+            --emergency-red: #ff0000;
+            --whatsapp-green: #00ff00;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            font-size: calc(var(--font-scale) * 1.1);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Foco Visível para Navegação por Teclado */
+        a:focus, button:focus, label:focus, input:focus {
+            outline: var(--focus-outline) !important;
+            outline-offset: 3px;
+        }
+
+        .access-bar {
+            background-color: #111827;
+            color: #ffffff;
+            padding: 12px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 3px solid var(--border-color);
+        }
+
+        .access-title {
+            font-size: calc(var(--font-scale) * 1.1);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .access-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-access {
+            background-color: #374151;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            padding: 10px 16px;
+            font-size: calc(var(--font-scale) * 0.95);
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 48px;
+            text-decoration: none;
+            user-select: none;
+        }
+
+        .btn-access:hover {
+            background-color: #4b5563;
+        }
+
+        body:has(#contrast-toggle:checked) .btn-access {
+            background-color: #ffff00;
+            color: #000000;
+            border-color: #ffffff;
+        }
+
+        header {
+            background-color: var(--surface-color);
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        header h1 {
+            font-size: calc(var(--font-scale) * 2);
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: calc(var(--font-scale) * 1.2);
+            color: var(--text-secondary);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* BANNER DE EMERGÊNCIA PRINCIPAL */
+        .emergency-banner {
+            background-color: #fff5f5;
+            border: 4px solid var(--emergency-red);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 35px;
+            box-shadow: 0 6px 12px rgba(211, 47, 47, 0.15);
+        }
+
+        body:has(#contrast-toggle:checked) .emergency-banner {
+            background-color: #2a0000;
+        }
+
+        .emergency-banner h2 {
+            color: var(--emergency-red);
+            font-size: calc(var(--font-scale) * 1.8);
+            margin-bottom: 12px;
+        }
+
+        body:has(#contrast-toggle:checked) .emergency-banner h2 {
+            color: #ff6666;
+        }
+
+        .btn-emergency-trigger {
+            background-color: var(--emergency-red);
+            color: #ffffff !important;
+            font-size: calc(var(--font-scale) * 1.4);
+            font-weight: bold;
+            padding: 18px 32px;
+            border: 3px solid #ffffff;
+            border-radius: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 10px;
+            box-shadow: 0 6px 0 #800000;
+            transition: transform 0.1s;
+            text-decoration: none;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .btn-emergency-trigger:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #800000;
+        }
+
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 3px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            font-size: calc(var(--font-scale) * 1.4);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-color);
+        }
+
+        body:has(#contrast-toggle:checked) .card h3 {
+            color: #ffff00;
+        }
+
+        .card p {
+            font-size: calc(var(--font-scale) * 1.1);
+            color: var(--text-color);
+            margin-bottom: 15px;
+        }
+
+        .card-button {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: inline-block;
+            border: 2px solid transparent;
+            font-size: calc(var(--font-scale) * 1);
+        }
+
+        .card-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* MODAL DE EMERGÊNCIA (PURE CSS COM CHECKBOX) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        /* Abre o modal quando o checkbox estiver marcado */
+        body:has(#modal-emergency-toggle:checked) .modal-overlay {
+            display: flex;
+        }
+
+        .modal-box {
+            background-color: var(--surface-color);
+            border: 5px solid var(--emergency-red);
+            border-radius: 20px;
+            max-width: 650px;
+            width: 100%;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: var(--emergency-red);
+            font-size: calc(var(--font-scale) * 1.8);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-close-modal {
+            background-color: #374151;
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: calc(var(--font-scale) * 1.1);
+            cursor: pointer;
+            border: 2px solid #ffffff;
+        }
+
+        /* LISTA DE CONTATOS NO MODAL */
+        .emergency-contacts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: #ffffff;
+            font-size: calc(var(--font-scale) * 1.3);
+            font-weight: bold;
+            border: 3px solid #ffffff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .contact-police {
+            background-color: #0d47a1;
+        }
+
+        .contact-firefighters {
+            background-color: #c62828;
+        }
+
+        .contact-samu {
+            background-color: #e65100;
+        }
+
+        .contact-whatsapp {
+            background-color: var(--whatsapp-green);
+        }
+
+        .contact-btn span.badge {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: calc(var(--font-scale) * 1.1);
+        }
+
+        footer {
+            background-color: var(--surface-color);
+            text-align: center;
+            padding: 25px 20px;
+            border-top: 2px solid var(--border-color);
+            margin-top: 40px;
+            font-size: calc(var(--font-scale) * 1);
+        }
+
+        @media (max-width: 600px) {
+            .access-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .access-controls {
+                justify-content: center;
+            }
+
+            .contact-btn {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CONTROLES OCULTOS DE ESTADO (PURE CSS) -->
+    <input type="radio" name="font-scale" id="font-size-sm" hidden>
+    <input type="radio" name="font-scale" id="font-size-md" checked hidden>
+    <input type="radio" name="font-scale" id="font-size-lg" hidden>
+    <input type="radio" name="font-scale" id="font-size-xl" hidden>
+    
+    <input type="checkbox" id="contrast-toggle" hidden>
+    <input type="checkbox" id="modal-emergency-toggle" hidden>
+
+    <!-- MENU SUPERIOR DE ACESSIBILIDADE -->
+    <nav class="access-bar" aria-label="Menu de Acessibilidade">
+        <div class="access-title">
+            <span>♿ Menu Acessível</span>
+        </div>
+        
+        <div class="access-controls">
+            <!-- Tamanho da Fonte -->
+            <span style="font-weight: bold; margin-right: 5px;">Tamanho do Texto:</span>
+            <label for="font-size-sm" class="btn-access" title="Diminuir texto">A-</label>
+            <label for="font-size-md" class="btn-access" title="Texto tamanho normal">A</label>
+            <label for="font-size-lg" class="btn-access" title="Aumentar texto">A+</label>
+            <label for="font-size-xl" class="btn-access" title="Texto muito grande">A++</label>
+
+            <!-- Modo Alto Contraste -->
+            <label for="contrast-toggle" class="btn-access" title="Alternar Alto Contraste">
+                👁️ Contraste
+            </label>
+
+            <!-- Leitura em Voz Alta -->
+            <button type="button" class="btn-access" onclick="lerPaginaEmVozAlta()" title="Ouvir o texto da página">
+                🔊 Ouvir Página
+            </button>
+        </div>
+    </nav>
+
+    <header>
+        <h1>Portal da Melhor Idade</h1>
+        <p>Espaço simplificado para facilidade, comunicação e segurança no seu dia a dia.</p>
+    </header>
+
+    <main id="conteudo-principal">
+        
+        <!-- SEÇÃO / BANNER DE EMERGÊNCIA -->
+        <section class="emergency-banner" aria-labelledby="titulo-emergencia">
+            <h2 id="titulo-emergencia">🚨 Precisa de Ajuda Rápida?</h2>
+            <p style="font-size: calc(var(--font-scale) * 1.2); margin-bottom: 15px;">
+                Clique no botão vermelho abaixo para abrir os telefones da Polícia, Bombeiros e do seu Familiar de Confiança.
+            </p>
+            
+            <!-- Botão que abre o modal -->
+            <label for="modal-emergency-toggle" class="btn-emergency-trigger" tabIndex="0" role="button" aria-expanded="false">
+                <span>📞 BOTÃO DE EMERGÊNCIA</span>
+            </label>
+        </section>
+
+        <!-- CARDS DE ATALHOS RÁPIDOS -->
+        <section class="grid-cards" aria-label="Serviços Úteis">
+            <article class="card">
+                <h3>💊 Meus Remédios</h3>
+                <p>Organize seus horários de medicamentos e configure lembretes diários simples.</p>
+                <a href="#remedios" class="card-button">Ver Meus Remédios</a>
+            </article>
+
+            <article class="card">
+                <h3>📞 Família & Amigos</h3>
+                <p>Acesse sua lista de contatos mais frequentes com fotos e botões grandes.</p>
+                <a href="#contatos" class="card-button">Ver Contatos</a>
+            </article>
+
+            <article class="card">
+                <h3>📰 Notícias do Dia</h3>
+                <p>Leia as principais notícias selecionadas com texto grande e fácil leitura.</p>
+                <a href="#noticias" class="card-button">Ler Notícias</a>
+            </article>
+
+            <article class="card">
+                <h3>☀️ Dicas de Saúde</h3>
+                <p>Exercícios leves, alimentação saudável e dicas de bem-estar para o seu dia.</p>
+                <a href="#saude" class="card-button">Ver Dicas</a>
+            </article>
+        </section>
+
+    </main>
+
+    <!-- MODAL DE EMERGÊNCIA (PURA HTML/CSS) -->
+    <div class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+        <div class="modal-box">
+            
+            <div class="modal-header">
+                <h2 id="modal-titulo">🚨 Ligar para Emergência</h2>
+                <label for="modal-emergency-toggle" class="btn-close-modal" role="button" tabIndex="0">
+                    ✖ Fechar
+                </label>
+            </div>
+
+            <p style="margin-bottom: 20px; font-size: calc(var(--font-scale) * 1.1);">
+                Clique em qualquer um dos botões abaixo para fazer a ligação ou enviar mensagem imediatamente:
+            </p>
+
+            <div class="emergency-contacts-list">
+                
+                <!-- Polícia Militar -->
+                <a href="tel:190" class="contact-btn contact-police" aria-label="Ligar para a Polícia Militar no 190">
+                    <span>🚔 POLÍCIA MILITAR</span>
+                    <span class="badge">Ligar 190</span>
+                </a>
+
+                <!-- Corpo de Bombeiros -->
+                <a href="tel:193" class="contact-btn contact-firefighters" aria-label="Ligar para o Corpo de Bombeiros no 193">
+                    <span>🚒 CORPO DE BOMBEIROS</span>
+                    <span class="badge">Ligar 193</span>
+                </a>
+
+                <!-- SAMU -->
+                <a href="tel:192" class="contact-btn contact-samu" aria-label="Ligar para o SAMU no 192">
+                    <span>🚑 SAMU (Ambulância)</span>
+                    <span class="badge">Ligar 192</span>
+                </a>
+
+                <!-- WhatsApp de Confiança -->
+                <a href="https://wa.me/5511999999999?text=Olá!%20Preciso%20de%20ajuda,%20por%20favor%20me%20responda." 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="contact-btn contact-whatsapp" 
+                   aria-label="Mandar mensagem no WhatsApp do contato de confiança">
+                    <span>💬 WHATSAPP DA FAMÍLIA</span>
+                    <span class="badge">Enviar Mensagem</span>
+                </a>
+
+            </div>
+
+            <div style="margin-top: 25px; text-align: center;">
+                <label for="modal-emergency-toggle" class="btn-emergency-trigger" style="background-color: #4b5563; box-shadow: none; width: auto; padding: 12px 24px; font-size: calc(var(--font-scale) * 1.1);" role="button" tabIndex="0">
+                    Voltar para a Tela Principal
+                </label>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Portal da Melhor Idade</strong> • Desenvolvido com foco em Acessibilidade e Facilidade.</p>
+        <p style="margin-top: 5px; color: var(--text-secondary);">Para ajuda por telefone, disque gratuitamente para 136 (Disque Saúde).</p>
+    </footer>
+
+    <!-- SCRIPT DE SUPORTE APENAS PARA LEITURA EM VOZ ALTA (SÍNTESE NATIVA DO NAVEGADOR) -->
+    <script>
+        function lerPaginaEmVozAlta() {
+            if ('speechSynthesis' in window) {
+                // Cancela falas anteriores se houver
+                window.speechSynthesis.cancel();
+
+                // Pega o texto do conteúdo principal e cabeçalho
+                const textoHeader = document.querySelector('header').innerText;
+                const textoPrincipal = document.getElementById('conteudo-principal').innerText;
+                
+                const textoCompleto = textoHeader + ". " + textoPrincipal;
+
+                const utterance = new SpeechSynthesisUtterance(textoCompleto);
+                utterance.lang = 'pt-BR';
+                utterance.rate = 0.9; // Velocidade ligeiramente reduzida para idosos
+
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("O seu navegador não suporta leitura em voz alta.");
+            }
+        }
+    </script>
+
+</body>
+</html>
